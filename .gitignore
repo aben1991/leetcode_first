@@ -1,0 +1,13 @@
+# 排除目录
+target/
+.idea/
+.settings/
+out/
+.vscode/
+
+#排除文件
+.classpath
+.project
+*.iml
+maven-eclipse.xml
+.class
