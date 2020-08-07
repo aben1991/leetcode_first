@@ -69,7 +69,59 @@ public class P10RegularExpressionMatching {
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+
+        private int[][] a;
+
         public boolean isMatch(String s, String p) {
+            a = new int[s.length()][p.length()];
+            return isMatch(s, 0, p, 0);
+        }
+
+        private boolean isMatch(String s, int i, String p, int j) {
+            if (i == s.length()) {
+                if (isEmpty(p, j)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else if (j == p.length()) {
+                return false;
+            }
+            if (a[i][j] == -1) {
+                return false;
+            } else if (a[i][j] == 1) {
+                return true;
+            }
+            char c1 = s.charAt(i);
+            char p1 = p.charAt(j);
+            boolean match;
+            if (j == p.length() - 1 || p.charAt(j + 1) != '*') {
+                if (p1 == '.' || p1 == c1) {
+                    match = isMatch(s, i + 1, p, j + 1);
+                } else {
+                    match = false;
+                }
+            } else {
+                if (p1 == '.' || p1 == c1) {
+                    match = isMatch(s, i + 1, p, j) || isMatch(s, i, p, j + 2);
+                } else {
+                    match = isMatch(s, i, p, j + 2);
+                }
+            }
+            a[i][j] = match ? 1 : -1;
+            return match;
+        }
+
+        private boolean isEmpty(String p, int j) {
+            if ((p.length() - j) % 2 == 1) {
+                return false;
+            }
+            j++;
+            for (; j < p.length(); j = j + 2) {
+                if (p.charAt(j) != '*') {
+                    return false;
+                }
+            }
             return true;
         }
     }
